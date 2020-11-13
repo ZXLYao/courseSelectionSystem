@@ -3,10 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+
+    <!-- 主要用来配置欢迎页、servlet、filter、listener等以及定制servlet、JSP、Context初始化参数
+         context-param->listener->filter->servlet -->
+
     <!--项目名称-->
     <display-name>courseSelectionSystem</display-name>
-       
-
 
     <!--欢迎页-->
     <welcome-file-list>
@@ -32,7 +34,35 @@
     </error-page>
 
 
+    <!-- Servlet配置。主要是配置前端控制器DispatcherServlet -->
+    <servlet>
+        <servlet-name>springmvc</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <!--  -->
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring-servlet.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 
+    <!-- 配置请求地址拦截URL -->  <!-- servlet-mapping和servlet中的servlet-name必须一致；显示拦截url，再去走DispatchServlet过滤-->
+    <servlet-mapping>
+        <servlet-name>springmvc</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <!-- 如果不配置contextConfigLocation，则会默认寻找<servlet-name>标签中定义的值，也就是spring-servlet.xml-->
+    <context-param>
+        <!-- 指定spring bean的配置文件所在目录 -->
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring-servlet.xml</param-value>
+    </context-param>
+
+    <!-- 配置ContextLoaderListerner -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
 
 
 </web-app>
